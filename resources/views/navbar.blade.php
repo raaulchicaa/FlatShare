@@ -20,6 +20,7 @@
                 </button>
         </form>   
     @else
+
         <a href="{{ route('login') }}">Login</a>
         <a href="{{ route('register') }}">Registro</a>
     @endif

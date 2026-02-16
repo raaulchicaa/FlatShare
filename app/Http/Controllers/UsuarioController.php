@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use App\Models\Cuenta;
-use App\Models\Cliente;
+use App\Models\Piso;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\File;
 
-class ClienteController extends Controller
+class UsuarioController extends Controller
 {
 function list() 
 {
-    $clientes = Cliente::all();
+    $usuarios = Usuario::all();
 
-    return view('cliente.list', ['clientes' => $clientes]);
+    return view('usuario.list', ['usuarios' => $usuarios]);
 }
 
 function new(Request $request) 
@@ -25,7 +25,7 @@ function new(Request $request)
     $hoy = new \DateTime();
 
     $validated = $request->validate([
-    'DNI' => 'required|unique:clientes|size:9',
+    'DNI' => 'required|unique:usuarios|size:9',
     'nombre' => 'required',
     'apellidos' => 'required',
     'fechaN' => 'before_or_equal:'.$hoy -> format('d-m-Y') ,
@@ -33,46 +33,52 @@ function new(Request $request)
 
    
 
-    $cliente = new Cliente;
+    $usuario = new Usuario;
 
-    $cliente->DNI = $request->DNI;
+    $usuario->DNI = $request->DNI;
 
-    $cliente->nombre = $request->nombre;
+    $usuario->nombre = $request->nombre;
 
-    $cliente->apellidos = $request->apellidos;
+    $usuario->apellidos = $request->apellidos;
 
-    $cliente->fechaN = $request->fechaN;
+    $usuario->numero = $request->numero;
+
+    $usuario->vendedor = $request->vendedor;
+
+    $usuario->email = $request->email;
+
+    $usuario->fecha_nac = $request->fecha_nac;
 
     if($request->file('imagen')){
     $file = $request->file('imagen');
-    $filename = $cliente->nombre.'_'.$cliente->apellidos.'_'.uniqid().'.'.$file->extension();
+    $filename = $usuario->nombre.'_'.$usuario->apellidos.'_'.uniqid().'.'.$file->extension();
     // guardamos en una variable $filename el nombre que pondremos
     //al fichero
     $file->move(public_path('uploads/imagenes'), $filename);
-    $cliente->imagen = $filename;
+    $usuario->imagen = $filename;
     }
 
-    $cliente->save();
+    $usuario->save();
 
-    return redirect()->route('cliente_list')->with('status', 'Nuevo cliente '.$cliente->DNI.' creada!');
+    return redirect()->route('usuario_list')->with('status', 'Nuevo usuario '.$usuario->DNI.' creado!');
  }
     // si no venimos de hacer submit al formulario, tenemos que mostrar el formulario
 
-    return view('cliente.new');
+    return view('usuario.new');
 }
 
 function delete($id) 
 { 
-    $cliente = Cliente::find($id);
-    $cliente->delete();
-    return redirect()->route('cliente_list')->with('status', 'Cliente '.$cliente->DNI.' eliminada!');
+    $usuario = Usuario::find($id);
+    $usuario->delete();
+    return redirect()->route('usuario_list')->with('status', 'Usuario '.$usuario->DNI.' eliminado!');
 }
 
 
 function update(Request $request , $id) 
 {
 
-    $cliente = Cliente::find($id);
+    $usuario = Usuario::find($id);
 
     if ($request->isMethod('post')) {   
         
@@ -81,51 +87,57 @@ function update(Request $request , $id)
 
     $validated = $request->validate([
     'DNI' => 'required',
-    Rule::unique('clientes')->ignore($cliente->id),
+    Rule::unique('usuarios')->ignore($usuario->id),
     'size:9',
     'nombre' => 'required',
     'apellidos' => 'required',
-    'fechaN' => 'before_or_equal:'.$hoy -> format('d-m-Y') ,
+    'numero' => 'required|numeric',
+    'vendedor' => 'required|boolean',
+    'email' => 'required|email',
+    'fecha_nac' => 'before_or_equal:'.$hoy -> format('d-m-Y') ,
     ]);
 
 
-    $cliente->DNI = $request->DNI;
+    $usuario->DNI = $request->DNI;
 
-    $cliente->nombre = $request->nombre;
+    $usuario->nombre = $request->nombre;
 
-    $cliente->apellidos = $request->apellidos;
+    $usuario->apellidos = $request->apellidos;
 
-    $cliente->fechaN = $request->fechaN;
+    $usuario->numero = $request->numero;
 
+    $usuario->vendedor = $request->vendedor;
 
+    $usuario->email = $request->email;
+
+    $usuario->fecha_nac = $request->fecha_nac;  
 
     if($request->file('imagen')){
     $file = $request->file('imagen');
-    $filename = $cliente->nombre.'_'.$cliente->apellidos.'_'.uniqid().'.'.$file->extension();
+    $filename = $usuario->nombre.'_'.$usuario->apellidos.'_'.uniqid().'.'.$file->extension();
     // guardamos en una variable $filename el nombre que pondremos
     //al fichero
     $file->move(public_path('uploads/imagenes'), $filename);
-    $cliente->imagen = $filename;
+    $usuario->imagen = $filename;
     }
 
     if(isset($request->borrarI)){
 
-        File::delete(public_path('uploads/imagenes/'.$cliente->imagen));
+        File::delete(public_path('uploads/imagenes/'.$usuario->imagen));
 
-        $cliente->imagen=null;
+        $usuario->imagen=null;
 
     }
     
 
+    $usuario->save();
 
-    $cliente->save();
-
-    return redirect()->route('cliente_list')->with('status', 'Editar cliente '.$cliente->DNI.' editada!');
+    return redirect()->route('usuario_list')->with('status', 'Editar usuario '.$usuario->DNI.' editada!');
     }
 
     
 
-    return view('cliente.update' , ['cliente' => $cliente]);
+    return view('usuario.update' , ['usuario' => $usuario]);
 
 }
 }

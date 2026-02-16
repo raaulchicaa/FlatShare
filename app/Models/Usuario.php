@@ -14,7 +14,7 @@ class Usuario extends Model
 
     protected function casts():array{
 
-        return ['fechaN' => 'datetime:Y-m-d' , ];
+        return ['fecha_nac' => 'datetime:Y-m-d' , ];
 
     }
 
