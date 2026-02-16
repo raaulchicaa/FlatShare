@@ -11,24 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-          Schema::create('pisos', function (Blueprint $table) {
+        Schema::create('pisos', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('ubicacion'); 
-            $table->number('precio');
-            $table->number('habitaciones');
-            $table->number('baños');
-            $table->number('metroscuadrados');
-            $table->number('metroscuadrados');
+            $table->integer('precio');
+            $table->integer('habitaciones');
+            $table->integer('baños');
+            $table->integer('metroscuadrados');
             $table->boolean('casa');
-            $table->number('planta');
+            $table->integer('planta');
 
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('usuarios');
-
-
-
         });
     }
 
@@ -37,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usuarios');
+        Schema::dropIfExists('pisos');
     }
 };

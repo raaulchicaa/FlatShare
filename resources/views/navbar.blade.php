@@ -8,9 +8,9 @@
 
     <a href="{{ route('home') }}">Inicio</a>
     &nbsp;&nbsp;&nbsp;
-    <a href="{{ route('cuenta_list') }}">Cuentas</a>
+    <a href="{{ route('piso_list') }}">Pisos</a>
     &nbsp;&nbsp;&nbsp;
-    <a href="{{ route('cliente_list') }}">Clientes</a>
+    <a href="{{ route('usuario_list') }}">Usuarios</a>
     &nbsp;&nbsp;&nbsp;
     @if(Auth::check())
         <form method="POST" action="{{ route('logout') }}">

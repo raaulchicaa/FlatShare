@@ -15,7 +15,7 @@ Route::get('/', [DefaultController::class, 'home'])->name('home');
 
 //// CUENTAS
 
-Route::get('/cuenta/list', [CuentaController::class, 'list'])->name('cuenta_list');
+Route::get('/piso/list', [PisoController::class, 'list'])->name('piso_list');
 
 Route::match(['get', 'post'], '/cuenta/new', [CuentaController::class, 'new'])->middleware(['auth', 'verified'])->name('cuenta_new');
 

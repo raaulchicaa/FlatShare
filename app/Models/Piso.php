@@ -3,15 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Flight;
 
-class Cuenta extends Model
+class Piso extends Model
 {
-    
-    public function cliente(): BelongsTo{
+     public function usuario(): BelongsTo{
 
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Usuario::class);
 
     } 
     

@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
-class Cliente extends Model
+class Usuario extends Model
 {
-    
     public function nombreApellido (){
 
         return $this->nombre." ".$this->apellidos;
@@ -21,12 +18,7 @@ class Cliente extends Model
 
     }
 
-    protected function cuentas(): HasMany{
-        return $this->hasMany(Cuenta::class);
+    protected function pisos(): HasMany{
+        return $this->hasMany(Piso::class);
     }
-
-   
-
 }
-
-
